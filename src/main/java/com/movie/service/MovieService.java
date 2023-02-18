@@ -3,19 +3,41 @@ package com.movie.service;
 import com.movie.model.Movie;
 import com.movie.repository.MovieRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
-public interface MovieService {
 
-    Movie save(Movie movie);
+@Service
+@RequiredArgsConstructor
+public class MovieService {
 
-    Movie update(Movie movie, Long id);
+    private final MovieRepository movieRepository;
 
-    Movie findAllMovies();
+    public Movie save(Movie movie) {
+        return movieRepository.save(movie);
+    }
 
-    Movie findById(Long id);
+    public List<Movie> getAllMovies() {
+        return movieRepository.findAll();
+    }
 
-    void deleteById(Long id);
+    public Movie getMovieById(Long id) {
+        return movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie found for the id "+id));
+    }
 
+    public Movie updateMovie(Movie movie, Long id) {
+        Movie existingMovie = movieRepository.findById(id).get();
+        existingMovie.setGenera(movie.getGenera());
+        existingMovie.setName(movie.getName());
+        existingMovie.setReleaseDate(movie.getReleaseDate());
+        return movieRepository.save(existingMovie);
+    }
+
+    public void deleteMovie(Long id) {
+        Movie existingMovie = movieRepository.findById(id).get();
+        movieRepository.delete(existingMovie);
+
+    }
 }

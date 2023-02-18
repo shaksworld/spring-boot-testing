@@ -25,24 +25,24 @@ public class MovieController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Movie> read() {
-        return (List<Movie>) movieService.findAllMovies();
+        return movieService.getAllMovies();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Movie read(@PathVariable Long id) {
-        return movieService.findById(id);
+        return movieService.getMovieById(id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
-        movieService.deleteById(id);
+        movieService.deleteMovie(id);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
     public Movie update(@PathVariable Long id, @RequestBody Movie movie) {
-        return movieService.update(movie, id);
+        return movieService.updateMovie(movie, id);
     }
 }
